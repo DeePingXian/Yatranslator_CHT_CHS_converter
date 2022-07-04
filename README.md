@@ -1,0 +1,2 @@
+# Yatranslator_CHS_CHT_converter
+Yatranslator簡繁中文本轉換工具
