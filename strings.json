@@ -1,0 +1,24 @@
+{
+    "CHT": {
+        "intro": "歡迎使用Yatranslator繁簡中文本轉換工具 v1.2.0\nGitHub頁面：https://github.com/DeePingXian/Yatranslator_CHS_CHT_converter\n\n本程式基於OpenCC開放中文轉換 v1.1.1 https://github.com/BYVoid/OpenCC\n請將要轉換的文本置於「before」資料夾下（沒有就創建一個），可包含資料夾，但不支援zip，請先解壓縮\n轉換完成的文本會存於「after」資料夾，若有同名資料夾則存於往後編號的資料夾",
+        "inputMessage": "請輸入轉換模式，或切換介面語言\n1：簡轉繁 2：繁轉簡 3：簡轉繁（包含慣用語） 4：繁轉簡（包含慣用語） 5：切換介面為繁中 6：切换介面为简中",
+        "convertedLines": "轉換行數",
+        "file": "檔案",
+        "convertErrorFormer": "轉換錯誤",
+        "convertErrorLatter": "將直接整段複製不轉換",
+        "nonTxtError": "非txt檔，跳過",
+        "nonBeforeFolderError": "未找到「before」資料夾，請按任意鍵退出...",
+        "completed": "轉換完成，請按任意鍵退出..."
+    },
+    "CHS": {
+        "intro": "欢迎使用Yatranslator繁简中文本转换工具 v1.2.0\nGitHub页面：https://github.com/DeePingXian/Yatranslator_CHS_CHT_converter\n\n本程式基于OpenCC开放中文转换 v1.1.1 https://github.com/BYVoid/OpenCC\n请将要转换的文本置于「before」文件夹下（没有就创建一个），可包含文件夹，但不支援zip，请先解压缩\n转换完成的文本会存于「after」文件夹，若有同名文件夹则存于往后编号的文件夹",
+        "inputMessage": "请输入转换模式，或切换介面语言\n1：简转繁 2：繁转简 3：简转繁（包含惯用语） 4：繁转简（包含惯用语） 5：切換介面為繁中 6：切换介面为简中",
+        "convertedLines": "转换行数",
+        "file": "档案",
+        "convertErrorFormer": "转换错误",
+        "convertErrorLatter": "将直接整段复制不转换",
+        "nonTxtError": "非txt档，跳过",
+        "nonBeforeFolderError": "未找到「before」文件夹，请按任意键退出...",
+        "completed": "转换完成，请按任意键退出..."
+    }
+}
