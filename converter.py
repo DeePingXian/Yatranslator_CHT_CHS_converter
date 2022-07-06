@@ -65,7 +65,7 @@ if 'before' in os.listdir():
                                     output_text_file.write((line.split('\t'))[0]+'\t'+OpenCC(mode).convert(line.split('\t')[1]))
                                 except:
                                     output_text_file.write(line)
-                                    print('\t'+json_data[language]['convertErrorFormer']+'「'+line+'」，'+json_data[language]['convertErrorLatter'])
+                                    print('\t'+json_data[language]['convertErrorFormer']+'「'+line.rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
                             bar()
             else:
                 print(json_data[language]['nonTxtError']+'：'+(dirs+'\\'+file).lstrip('before\\'))
