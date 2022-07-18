@@ -4,6 +4,7 @@ import json
 from alive_progress import alive_bar
 from alive_progress.animations import scrolling_spinner_factory
 from opencc import OpenCC
+from pyparsing import empty
 
 with open('strings.json' , 'r' , encoding = 'utf8') as json_file:
     json_data = json.load(json_file)
@@ -56,8 +57,12 @@ if 'before' in os.listdir():
         for file in files:
             if file.endswith('.txt'):
                 fileNum += 1
+                isEmptyFile = False
+                with open(dirs+'\\'+file , 'r' , encoding='UTF-8') as input_text_file_:
+                    if input_text_file_.readlines() == []:
+                        isEmptyFile = True
                 with open(dirs+'\\'+file , 'r' , encoding='UTF-8') as input_text_file:
-                    if input_text_file.readlines() != []:
+                    if not isEmptyFile:
                         print('目前'+json_data[language]['file']+'：'+(dirs+'\\'+file).lstrip('before\\'))
                         lineSum = list(enumerate(open(dirs+'\\'+file , 'r' , encoding='UTF-8') , start=1))[-1][0]       #數此txt檔的行數
                         with alive_bar(lineSum , title=f'{json_data[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
