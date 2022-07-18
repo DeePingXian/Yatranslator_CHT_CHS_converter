@@ -4,7 +4,6 @@ import json
 from alive_progress import alive_bar
 from alive_progress.animations import scrolling_spinner_factory
 from opencc import OpenCC
-from pyparsing import empty
 
 with open('strings.json' , 'r' , encoding = 'utf8') as json_file:
     json_data = json.load(json_file)
