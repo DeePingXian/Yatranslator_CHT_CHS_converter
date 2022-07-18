@@ -16,13 +16,14 @@ mode = ''
 while mode not in ('1','2','3','4'):
     mode = input(json_data[language]['inputMessage']+'\n')
     if mode == '5':
-        language = 'CHT'
-        with open('settings.json' , 'w' , encoding = 'utf8') as f:
-            json.dump({'defaultLanguage': 'CHT'}, f, ensure_ascii=False)
-    elif mode == '6':
-        language = 'CHS'
-        with open('settings.json' , 'w' , encoding = 'utf8') as f:
-            json.dump({'defaultLanguage': 'CHS'}, f, ensure_ascii=False)
+        if language == 'CHT':
+            language = 'CHS'
+            with open('settings.json' , 'w' , encoding = 'utf8') as f:
+                json.dump({'defaultLanguage': 'CHS'}, f, ensure_ascii=False)
+        elif language == 'CHS':
+            language = 'CHT'
+            with open('settings.json' , 'w' , encoding = 'utf8') as f:
+                json.dump({'defaultLanguage': 'CHT'}, f, ensure_ascii=False)
 
 if 'before' in os.listdir():
     if mode == '1':
@@ -55,18 +56,21 @@ if 'before' in os.listdir():
         for file in files:
             if file.endswith('.txt'):
                 fileNum += 1
-                print('目前'+json_data[language]['file']+'：'+(dirs+'\\'+file).lstrip('before\\'))
                 with open(dirs+'\\'+file , 'r' , encoding='UTF-8') as input_text_file:
-                    lineSum = list(enumerate(open(dirs+'\\'+file , 'r' , encoding='UTF-8') , start=1))[-1][0]       #數此txt檔的行數
-                    with alive_bar(lineSum , title=f'{json_data[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
-                        for line in input_text_file:
-                            with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding='UTF-8') as output_text_file:
-                                try:
-                                    output_text_file.write((line.split('\t'))[0]+'\t'+OpenCC(mode).convert(line.split('\t')[1]))
-                                except:
-                                    output_text_file.write(line)
-                                    print('\t'+json_data[language]['convertErrorFormer']+'「'+line.rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
-                            bar()
+                    if input_text_file.readlines() != []:
+                        print('目前'+json_data[language]['file']+'：'+(dirs+'\\'+file).lstrip('before\\'))
+                        lineSum = list(enumerate(open(dirs+'\\'+file , 'r' , encoding='UTF-8') , start=1))[-1][0]       #數此txt檔的行數
+                        with alive_bar(lineSum , title=f'{json_data[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
+                            for line in input_text_file:
+                                with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding='UTF-8') as output_text_file:
+                                    try:
+                                        output_text_file.write((line.split('\t'))[0]+'\t'+OpenCC(mode).convert(line.split('\t')[1]))
+                                    except:
+                                        output_text_file.write(line)
+                                        print('\t'+json_data[language]['convertErrorFormer']+'「'+line.rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
+                                bar()
+                    else:
+                        print('「'+(dirs+'\\'+file).lstrip('before\\')+'」'+json_data[language]['emptyFile'])
             else:
                 print(json_data[language]['nonTxtError']+'：'+(dirs+'\\'+file).lstrip('before\\'))
     print(json_data[language]['completed'])
