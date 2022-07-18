@@ -71,6 +71,8 @@ if 'before' in os.listdir():
                                 bar()
                     else:
                         print('「'+(dirs+'\\'+file).lstrip('before\\')+'」'+json_data[language]['emptyFile'])
+                        with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding='UTF-8') as output_text_file:
+                            output_text_file.write('')
             else:
                 print(json_data[language]['nonTxtError']+'：'+(dirs+'\\'+file).lstrip('before\\'))
     print(json_data[language]['completed'])
