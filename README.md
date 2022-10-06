@@ -13,7 +13,12 @@ Yatranslator翻譯文本的格式：TAB分隔日中文本、換行區隔翻譯�
 這程式面對COM3D2海量的文本，執行效率顯得十分低落，實際使用時建議把文本拆成幾份，多開幾個程式一起轉換。<br>
 Releases那邊exe檔的編譯器：<br>
 - v1.0.0：PyInstaller
-- v1.2.0以後：Nuitka ＆ GCC<br><br>
+- v1.2.0以後：Nuitka ＆ GCC
+
+實測效能<br>
+Intel® Core™ i5-9400F：約29行/s<br>
+AMD Ryzen™ 7 3700X PBO FCLK 1500MHz：約37行/s<br>
+AMD Ryzen™ 7 7700X PBO FCLK 2000MHz：約70行/s<br><br>
 
 ## 使用規範
 此程式允許任何形式的使用、修改、打包、轉發，不需經本人同意，也可以加進自己的專案中。轉換它人的文本，除個人使用外之用途請經文本主人同意。
