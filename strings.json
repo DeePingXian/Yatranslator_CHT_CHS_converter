@@ -1,7 +1,7 @@
 {
     "CHT": {
-        "intro": "歡迎使用Yatranslator繁簡中文本轉換工具 v1.2.1\nGitHub頁面：https://github.com/DeePingXian/Yatranslator_CHT_CHS_converter\n\n※放置此程式的資料夾路徑只能包含英數，不能有中文等其他語言，以降低出錯機率\n\n本程式基於OpenCC開放中文轉換 v1.1.1 https://github.com/BYVoid/OpenCC\n請將要轉換的文本置於「before」資料夾下（沒有就創建一個），可包含資料夾，但不支援zip，請先解壓縮\n轉換完成的文本會存於「after」資料夾，若有同名資料夾則存於往後編號的資料夾",
-        "inputMessage": "請輸入轉換模式，或切換介面語言\n1：簡轉繁 2：繁轉簡 3：簡轉繁（包含慣用語） 4：繁轉簡（包含慣用語） 5：切換介面語言",
+        "intro": "歡迎使用Yatranslator繁簡中文本轉換工具 v1.3.0\nGitHub頁面：https://github.com/DeePingXian/Yatranslator_CHT_CHS_converter\n\n本程式基於OpenCC開放中文轉換 v1.1.1 https://github.com/BYVoid/OpenCC\n放置此程式的資料夾路徑請盡量只包含英數，以降低出錯機率\n請將要轉換的文本置於「before」資料夾下（沒有就創建一個），可包含資料夾，但不支援zip檔，請先解壓縮\n當一檔案的文本在51行以上時會使用多核並行轉換，以加快轉換速度，50行以下則不使用，避免分配工作消耗太多時間\n轉換完成的文本會存於「after」資料夾，若有同名資料夾，則存於往後編號的資料夾",
+        "inputMessage": "請輸入轉換模式，或切換介面語言\n1：簡轉繁（包含慣用語） 2：繁轉簡（包含慣用語） 3：簡轉繁 4：繁轉簡 5：切換介面語言",
         "convertedLines": "轉換行數",
         "file": "檔案",
         "emptyFile": "為空檔案，將直接複製",
@@ -12,8 +12,8 @@
         "completed": "轉換完成，請按任意鍵退出..."
     },
     "CHS": {
-        "intro": "欢迎使用Yatranslator繁简中文本转换工具 v1.2.1\nGitHub页面：https://github.com/DeePingXian/Yatranslator_CHT_CHS_converter\n\n※放置此程式的文件夹路径只能包含英数，不能有中文等其他语言，以降低出错概率\n\n本程式基于OpenCC开放中文转换 v1.1.1 https://github.com/BYVoid/OpenCC\n请将要转换的文本置于「before」文件夹下（没有就创建一个），可包含文件夹，但不支援zip，请先解压缩\n转换完成的文本会存于「after」文件夹，若有同名文件夹则存于往后编号的文件夹",
-        "inputMessage": "请输入转换模式，或切换介面语言\n1：简转繁 2：繁转简 3：简转繁（包含惯用语） 4：繁转简（包含惯用语） 5：切換介面语言",
+        "intro": "欢迎使用Yatranslator繁简中文本转换工具 v1.3.0\nGitHub页面：https://github.com/DeePingXian/Yatranslator_CHT_CHS_converter\n\n本程式基于OpenCC开放中文转换 v1.1.1 https://github.com/BYVoid/OpenCC\n放置此程式的文件夹路径请尽量只包含英数，以降低出错概率\n请将要转换的文本置于「before」文件夹下（没有就创建一个），可包含文件夹，但不支援zip档，请先解压缩\n当一档案的文本在51行以上时会使用多核并行转换，以加快转换速度，50行以下则不使用，避免分配工作消耗太多时间\n转换完成的文本会存于「after」文件夹，若有同名文件夹，则存于往后编号的文件夹",
+        "inputMessage": "请输入转换模式，或切换介面语言\n1：简转繁（包含惯用语） 2：繁转简（包含惯用语） 3：简转繁 4：繁转简 5：切換介面语言",
         "convertedLines": "转换行数",
         "file": "档案",
         "emptyFile": "为空档案，将直接复制",
