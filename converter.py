@@ -1,13 +1,10 @@
-import os
-import msvcrt
-import json
-import multiprocessing
+import os , msvcrt , multiprocessing , chardet , json
 from alive_progress import alive_bar
 from alive_progress.animations import scrolling_spinner_factory
 from opencc import OpenCC
 
-with open('strings.json' , 'r' , encoding = 'utf8') as json_file:
-    json_data = json.load(json_file)
+with open('strings.json' , 'r' , encoding = 'utf8') as jsonFile:
+    stringsData = json.load(jsonFile)
 with open('settings.json' , 'r' , encoding = 'utf8') as language:
     language = json.load(language)
 language = language['defaultLanguage']
@@ -19,14 +16,14 @@ def converter(line , mode , lineNum , lineQueue):
         lineQueue.put((lineNum , line , True))
     return 0
 
-def writer(file , lineQueue , lineSum , fileNum , fileSum):
+def writer(file , lineQueue , lineSum , fileNum , fileSum , encoding):
     #lineDict = {第幾行int:(文字str,是否出錯bool)}      用字典讓各行輸出的順序維持原檔案的樣子，不會被並行處理打亂
     lineDict = {}
     lineNum = 1
     lineReceived = 0
-    spinner = scrolling_spinner_factory(json_data[language]['convertedLines'], length=20 , background='-', right=True, hide=True, wrap=True, overlay=False)        #自訂進度條動畫
-    with open(file , 'a' , encoding='UTF-8') as output_text_file:
-        with alive_bar(lineSum , title=f'{json_data[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
+    spinner = scrolling_spinner_factory(stringsData[language]['convertedLines'], length=20 , background='-', right=True, hide=True, wrap=True, overlay=False)        #自訂進度條動畫
+    with open(file , 'a' , encoding=encoding) as output_text_file:
+        with alive_bar(lineSum , title=f'{stringsData[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
             while True:
                 if lineReceived < lineSum:
                     line = lineQueue.get()
@@ -36,7 +33,7 @@ def writer(file , lineQueue , lineSum , fileNum , fileSum):
                     output_text_file.flush()
                     if lineDict[lineNum][1] == True:
                         if lineDict[lineNum][0] != '\n':
-                            print('\t'+json_data[language]['convertErrorFormer']+'「'+lineDict[lineNum][0].rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
+                            print('\t'+stringsData[language]['convertErrorFormer']+'「'+lineDict[lineNum][0].rstrip('\n')+'」，'+stringsData[language]['convertErrorLatter'])
                     del lineDict[lineNum]
                     lineNum += 1
                 if line[0] == lineNum:
@@ -44,7 +41,7 @@ def writer(file , lineQueue , lineSum , fileNum , fileSum):
                     output_text_file.flush()
                     if line[2] == True:
                         if line[1] != '\n':
-                            print('\t'+json_data[language]['convertErrorFormer']+'「'+line[1].rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
+                            print('\t'+stringsData[language]['convertErrorFormer']+'「'+line[1].rstrip('\n')+'」，'+stringsData[language]['convertErrorLatter'])
                     lineNum += 1
                     bar()
                 elif line[0] > 0 and lineNum <= lineSum:
@@ -54,13 +51,14 @@ def writer(file , lineQueue , lineSum , fileNum , fileSum):
                     return 0
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     CPUThreads = multiprocessing.cpu_count()        #一開始先抓CPU執行緒數，之後就不用再抓
     if CPUThreads < 2:
         CPUThreads = 2
-    print(json_data[language]['intro']+'\n')
+    print(stringsData[language]['intro']+'\n')
     mode = ''
     while mode not in ('1','2','3','4'):
-        mode = input(json_data[language]['inputMessage']+'\n')
+        mode = input(stringsData[language]['inputMessage']+'\n')
         if mode == '5':
             if language == 'CHT':
                 language = 'CHS'
@@ -102,18 +100,21 @@ if __name__ == '__main__':
                 if file.endswith('.txt'):
                     fileNum += 1
                     isEmptyFile = False
-                    with open(dirs+'\\'+file , 'r' , encoding='UTF-8') as input_text_file_:
-                        if input_text_file_.readlines() == []:
+                    encoding = ''
+                    with open(dirs+'\\'+file , 'rb') as input_text_file:
+                        encoding = chardet.detect(input_text_file.readline())['encoding']       #只讀第一行來判斷編碼 避免chardet當掉
+                    with open(dirs+'\\'+file , 'r' , encoding=encoding) as input_text_file:
+                        if input_text_file.readlines() == []:
                             isEmptyFile = True
-                    with open(dirs+'\\'+file , 'r' , encoding='UTF-8') as input_text_file:
+                    with open(dirs+'\\'+file , 'r' , encoding=encoding) as input_text_file:
                         if not isEmptyFile:
-                            print('目前'+json_data[language]['file']+'：'+(dirs+'\\'+file).lstrip('before\\'))
-                            lineSum = list(enumerate(open(dirs+'\\'+file , 'r' , encoding='UTF-8') , start=1))[-1][0]       #數此txt檔的行數
+                            print('目前'+stringsData[language]['file']+'：'+(dirs+'\\'+file).lstrip('before\\'))
+                            lineSum = list(enumerate(open(dirs+'\\'+file , 'r' , encoding=encoding) , start=1))[-1][0]       #數此txt檔的行數
                             if lineSum <= 50:
-                                spinner = scrolling_spinner_factory(json_data[language]['convertedLines'], length=20 , background='-', right=True, hide=True, wrap=True, overlay=False)        #自訂進度條動畫
-                                with alive_bar(lineSum , title=f'{json_data[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
+                                spinner = scrolling_spinner_factory(stringsData[language]['convertedLines'], length=20 , background='-', right=True, hide=True, wrap=True, overlay=False)        #自訂進度條動畫
+                                with alive_bar(lineSum , title=f'{stringsData[language]["file"]}{fileNum}/{fileSum}' , spinner=spinner , bar='smooth') as bar:
                                     for line in input_text_file:
-                                        with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding='UTF-8') as output_text_file:
+                                        with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding=encoding) as output_text_file:
                                             try:
                                                 output_text_file.write((line.split('\t'))[0]+'\t'+OpenCC(mode).convert(line.split('\t')[1]))
                                                 output_text_file.flush()
@@ -121,14 +122,14 @@ if __name__ == '__main__':
                                                 output_text_file.write(line)
                                                 output_text_file.flush()
                                                 if line != '\n':
-                                                    print('\t'+json_data[language]['convertErrorFormer']+'「'+line.rstrip('\n')+'」，'+json_data[language]['convertErrorLatter'])
+                                                    print('\t'+stringsData[language]['convertErrorFormer']+'「'+line.rstrip('\n')+'」，'+stringsData[language]['convertErrorLatter'])
                                         bar()
                             else:
                                 lineNum = 1
                                 lineQueue = multiprocessing.Manager().Queue()
                                 taskPool = multiprocessing.Pool(processes = CPUThreads)
                                 taskList = []
-                                writer_ = taskPool.apply_async(writer , (targetFolder+((dirs+'\\'+file).lstrip('before')) , lineQueue , lineSum , fileNum , fileSum))
+                                writer_ = taskPool.apply_async(writer , (targetFolder+((dirs+'\\'+file).lstrip('before')) , lineQueue , lineSum , fileNum , fileSum , encoding))
                                 for line in input_text_file:
                                     task = taskPool.apply_async(converter , (line , mode , lineNum , lineQueue))
                                     taskList.append(task)
@@ -138,17 +139,17 @@ if __name__ == '__main__':
                                 writer_.get()
                                 taskPool.close()
                         else:
-                            print('「'+(dirs+'\\'+file).lstrip('before\\')+'」'+json_data[language]['emptyFile'])
-                            with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding='UTF-8') as output_text_file:
+                            print('「'+(dirs+'\\'+file).lstrip('before\\')+'」'+stringsData[language]['emptyFile'])
+                            with open(targetFolder+((dirs+'\\'+file).lstrip('before')) , 'a' , encoding=encoding) as output_text_file:
                                 output_text_file.write('')
                 else:
-                    print(json_data[language]['nonTxtError']+'：'+(dirs+'\\'+file).lstrip('before\\'))
-        print(json_data[language]['completed'])
+                    print(stringsData[language]['nonTxtError']+'：'+(dirs+'\\'+file).lstrip('before\\'))
+        print(stringsData[language]['completed'])
         while True:
             if msvcrt.getch():
                 break
     else:
-        print(json_data[language]['nonBeforeFolderError'])
+        print(stringsData[language]['nonBeforeFolderError'])
         while True:
             if msvcrt.getch():
                 break
